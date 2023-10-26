@@ -17,6 +17,10 @@ class ContaPoupanca implements Conta {
 
   @override
   bool sacar(double valor) {
+    if(valor <= _saldo){
+      _saldo -= valor;
+      return true;
+    }
     return false;
   }
 

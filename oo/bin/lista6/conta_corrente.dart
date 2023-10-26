@@ -18,6 +18,10 @@ class ContaCorrente implements Conta {
 
   @override
   bool sacar(double valor) {
+    if(valor <= (_saldo + _limite)){
+      _saldo -= valor;
+      return true;
+    }
     return false;
   }
 
