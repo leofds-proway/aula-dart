@@ -72,6 +72,7 @@ exibirResultado(List<FormaGeometrica> formas){
       print('Forma inválida');
     }
   });
+  print('');
 
   //b
   print('Perímetros:');
