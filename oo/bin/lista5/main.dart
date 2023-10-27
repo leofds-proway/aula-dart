@@ -1,64 +1,72 @@
+
 import 'dart:io';
 
-import 'engenheiro.dart';
-import 'funcionario.dart';
-import 'gerente.dart';
-import 'supervisor.dart';
-import 'total_binificacoes.dart';
+import 'conta.dart';
+import 'conta_corrente.dart';
+import 'conta_poupanca.dart';
 
-void main(List<String> args) {
-  
-  List<Funcionario> listaFuncionarios = [];
+void main(){
+  // Conta conta = ContaPoupanca(); 
+  // conta.depositar(100);
+  // print(conta.sacar(150));
+  // print(conta.saldo);
 
-  listaFuncionarios.add(Funcionario(nome: 'Leo', cpf: '111', salario: 1000));
-  listaFuncionarios.add(Gerente(nome: 'Ivo', cpf: '222', salario: 1000));
-  listaFuncionarios.add(Engenheiro(nome: 'Nestor', cpf: '333', salario: 1000));
-  listaFuncionarios.add(Supervisor(nome: 'Aroldo', cpf: '444', salario: 1000));
+  Conta conta;
 
-  TotalBonificacoes totalBonificacoes = TotalBonificacoes();
-  
+  print('Tipo da conta:\n1. Corrente\n2. Poupança');
+  String tipo = stdin.readLineSync()!;
+  if(tipo == '1'){
+    conta = ContaCorrente();
+  } else {
+    conta = ContaPoupanca();
+  }
+
   String opc = '';
-  while(opc != '5'){
-    print('Informe a opção:\n1. Funcionário\n2. Gerente\n3. Engenheiro\n4. Supervisor\n5. Sair');
+  while(opc != '4'){
+    print('Informe a opção:\n1. Sacar\n2. Depositar\n3. Ver Saldo\n4. Sair');
     opc = stdin.readLineSync()!;
     switch(opc){
       case '1':
-      case '2':
-      case '3':
-      case '4':
-        print('Informe o nome');
-        String nome = stdin.readLineSync()!;
-        print('Informe o cpf');
-        String cpf = stdin.readLineSync()!;
-        print('Informe o salário');
-        double salario = double.parse( stdin.readLineSync()! );
-        switch(opc){
-          case '1':
-            listaFuncionarios.add( Funcionario(nome: nome, cpf: cpf, salario: salario) );
-            break;
-          case '2':
-            listaFuncionarios.add( Gerente(nome: nome, cpf: cpf, salario: salario) );
-            break;
-          case '3':
-            listaFuncionarios.add( Engenheiro(nome: nome, cpf: cpf, salario: salario) );
-            break;
-          case '4':
-            listaFuncionarios.add( Supervisor(nome: nome, cpf: cpf, salario: salario) );
-            break;
-        }
+        sacar(conta);
         break;
-      case '5':
+      case '2':
+        depositar(conta);
+        break;
+      case '3':
+        exibirSaldo(conta);
+        break;
+      case '4':
         break;
       default:
         print('Opção inválida!');
     }
   }
+}
 
-  print('Funcionários:');
-  listaFuncionarios.forEach((funcionario){
-    print(funcionario);
-    totalBonificacoes.add(funcionario.calcularBonificacao());
-  });
+exibirSaldo(Conta conta){
+  print('Saldo (R\$): ${conta.saldo}');
+}
 
-  print('Total das bonificações: ${totalBonificacoes.getValorTotal().toStringAsFixed(2)}');
+depositar(Conta conta){
+  print('Informe o valor:');
+  double? valor = double.tryParse(stdin.readLineSync()!);
+  if(valor != null){
+    conta.depositar(valor);
+  }else{
+    print('Valor inválido!');
+  }
+}
+
+sacar(Conta conta){
+  print('Informe o valor:');
+  double? valor = double.tryParse(stdin.readLineSync()!);
+  if(valor != null){
+    if(conta.sacar(valor)){
+      print('Saque realizado com succeso!');
+    } else {
+      print('Saldo insuficiente!');
+    }
+  }else{
+    print('Valor inválido!');
+  }
 }
